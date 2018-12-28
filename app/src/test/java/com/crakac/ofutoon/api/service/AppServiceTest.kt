@@ -1,14 +1,13 @@
 package com.crakac.ofutoon.api.service
 
 import com.crakac.ofutoon.BuildConfig
-import com.crakac.ofutoon.api.C
 import com.crakac.ofutoon.api.Mastodon
 import com.crakac.ofutoon.api.entity.AppCredentials
 import org.junit.Assert
 import org.junit.Test
 
 class AppServiceTest {
-    val noTokenApi = Mastodon.initialize("localhost")
+    val noTokenApi = Mastodon.create("localhost")
 
     @Test
     fun register() {
@@ -33,7 +32,7 @@ class AppServiceTest {
             Assert.assertTrue(response.isSuccessful)
             val token = response.body()!!
             System.out.println(token.scope)
-            api = Mastodon.initialize("localhost", token.accessToken)
+            api = Mastodon.create("localhost", token.accessToken)
         }
 
         api?.let{

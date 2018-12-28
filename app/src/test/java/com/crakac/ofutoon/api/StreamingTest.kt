@@ -20,7 +20,7 @@ class StreamingTest {
 
         val lock = CountDownLatch(10)
         val request = Request.Builder()
-            .url("ws:/localhost:4000/initialize/v1/streaming/?access_token=${BuildConfig.LOCAL_TOKEN}&stream=public:local")
+            .url("ws:/localhost:4000/create/v1/streaming/?access_token=${BuildConfig.LOCAL_TOKEN}&stream=public:local")
             .build()
         val logger = HttpLoggingInterceptor()
         logger.level = HttpLoggingInterceptor.Level.BODY
