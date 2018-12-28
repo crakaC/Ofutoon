@@ -8,7 +8,7 @@ data class UserAccount(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     var userId: Long = 0,
-    var avator: String = "",
+    var avatar: String = "",
     var name: String = "",
     var displayName: String = "",
     var domain: String = "",
