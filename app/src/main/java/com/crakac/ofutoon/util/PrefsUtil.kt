@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 
-class PrefsUtil {
+class PrefsUtil private constructor(){
     val TAG: String = "PrefsUtil"
 
     companion object {

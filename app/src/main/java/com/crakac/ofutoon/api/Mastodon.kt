@@ -1,6 +1,7 @@
 package com.crakac.ofutoon.api
 
 import android.net.Uri
+import android.support.annotation.VisibleForTesting
 import com.crakac.ofutoon.BuildConfig
 import com.crakac.ofutoon.C
 import com.crakac.ofutoon.api.entity.AccessToken
@@ -31,7 +32,6 @@ class Mastodon(
     followSuggestionService: FollowSuggestionService,
     instanceService: InstanceService,
     listService: ListService,
-    mastodonService: MastodonService,
     mediaAttachmentService: MediaAttachmentService,
     muteService: MuteService,
     notificationService: NotificationService,
@@ -52,7 +52,6 @@ class Mastodon(
     FollowSuggestionService by followSuggestionService,
     InstanceService by instanceService,
     ListService by listService,
-    MastodonService by mastodonService,
     MediaAttachmentService by mediaAttachmentService,
     MuteService by muteService,
     NotificationService by notificationService,
@@ -61,20 +60,57 @@ class Mastodon(
     StatusService by statusService,
     TimelineService by timelineService {
     companion object {
-        const val ENDPOINT_AUTHORIZE: String = "/oauth/authorize"
-        const val OAUTH_SCOPES: String = "read write follow push"
-        const val AUTHORIZATION_CODE: String = "authorization_code"
-        const val CLIENT_ID: String = "client_id"
-        const val CLIENT_SECRET: String = "client_secret"
-        const val CREDENTIAL_ID: String = "credential_id"
-        const val REDIRECT_URI: String = "redirect_uri"
-        const val RESPONSE_TYPE: String = "response_type"
-        const val SCOPE: String = "scope"
+        private const val ENDPOINT_AUTHORIZE: String = "/oauth/authorize"
+        private const val OAUTH_SCOPES: String = "read write follow push"
+        private const val AUTHORIZATION_CODE: String = "authorization_code"
+        private const val CLIENT_ID: String = "client_id"
+        private const val CLIENT_SECRET: String = "client_secret"
+        private const val CREDENTIAL_ID: String = "credential_id"
+        private const val REDIRECT_URI: String = "redirect_uri"
+        private const val RESPONSE_TYPE: String = "response_type"
+        private const val SCOPE: String = "scope"
 
-        fun create(domain: String, accessToken: String? = null): Mastodon =
+        private val dispatcher: Dispatcher = Dispatcher()
+
+        private var instance: Mastodon? = null
+        val api: Mastodon get() = instance!!
+
+        fun create(domain: String, accessToken: String): Mastodon =
             Mastodon.Builder(domain, accessToken).build()
 
-        fun create(user: User): Mastodon = Mastodon.Builder(user).build()
+        fun initialize(user: User) {
+            instance = Mastodon.Builder(user).build()
+        }
+
+        private fun createHttpClient(bearerToken: String? = null): OkHttpClient {
+            val logger = HttpLoggingInterceptor()
+            logger.level =
+                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+
+            val httpClientBuilder = OkHttpClient.Builder().addInterceptor(logger).dispatcher(dispatcher)
+            if (bearerToken != null) {
+                httpClientBuilder.addInterceptor {
+                    val org = it.request()
+                    val builder = org.newBuilder()
+                    builder.addHeader("Authorization", "Bearer $bearerToken")
+                    val newRequest = builder.build()
+                    it.proceed(newRequest)
+                }
+            }
+            return httpClientBuilder.build()
+        }
+
+        private fun createRetrofit(domain: String, httpClient: OkHttpClient): Retrofit {
+            return Retrofit.Builder()
+                .baseUrl(if (domain == "localhost") "http://localhost" else "https://$domain")
+                .client(httpClient)
+                .addConverterFactory(
+                    GsonConverterFactory.create(
+                        GsonBuilder().setLongSerializationPolicy(LongSerializationPolicy.STRING).create()
+                    )
+                )
+                .build()
+        }
 
         fun createAuthenticationUri(domain: String, redirectUri: String): Uri {
             return Uri.Builder()
@@ -100,25 +136,30 @@ class Mastodon(
             return clientId != null && clientSecret != null
         }
 
-        fun existsCurrentAccount(callBack: (account: User?) -> Unit) {
+        fun currentAccount(callback: (account: User?) -> Unit) {
             AppDatabase.execute {
                 val user = AppDatabase.instance.userDao().getUser(PrefsUtil.getInt(C.CURRENT_USER_ID, 0))
                 AppDatabase.uiThread {
-                    callBack(user)
+                    callback(user)
                 }
             }
         }
 
-        fun getClientId(domain: String): String? {
+        private fun getClientId(domain: String): String? {
             return PrefsUtil.getString("$domain.$CLIENT_ID")
         }
 
-        fun getClientSecret(domain: String): String? {
+        private fun getClientSecret(domain: String): String? {
             return PrefsUtil.getString("$domain.$CLIENT_SECRET")
         }
 
-        fun registerApplication(domain: String, clientName: String, redirectUris: String, website: String): Call<AppCredentials> {
-            return Mastodon.create(domain).registerApplication(
+        fun registerApplication(
+            domain: String,
+            clientName: String,
+            redirectUris: String,
+            website: String
+        ): Call<AppCredentials> {
+            return RegisterService.create(domain).registerApplication(
                 clientName,
                 redirectUris,
                 OAUTH_SCOPES,
@@ -129,16 +170,11 @@ class Mastodon(
         fun fetchAccessToken(domain: String, redirectUri: String, code: String): Call<AccessToken> {
             val id = getClientId(domain)!!
             val secret = getClientSecret(domain)!!
-            return Mastodon.create(domain).fetchAccessToken(id, secret, redirectUri, code, AUTHORIZATION_CODE)
+            return RegisterService.create(domain).fetchAccessToken(id, secret, redirectUri, code, AUTHORIZATION_CODE)
         }
-
     }
 
     class Builder() {
-        companion object {
-            val dispatcher: Dispatcher = Dispatcher()
-        }
-
         private var user: User? = null
         private var host: String = ""
         private var token: String? = null
@@ -146,24 +182,17 @@ class Mastodon(
         constructor(user: User) : this() {
             this.user = user
             host = user.domain
+            token = user.token
         }
 
-        constructor(host: String, token: String?) : this() {
+        constructor(host: String, token: String? = null) : this() {
             this.host = host
             this.token = token
         }
 
         fun build(): Mastodon {
-            val okHttpClient = createMastodonHttpClient(token ?: user?.token)
-            val retrofit = Retrofit.Builder()
-                .baseUrl(if (host == "localhost") "http://localhost" else "https://$host")
-                .client(okHttpClient)
-                .addConverterFactory(
-                    GsonConverterFactory.create(
-                        GsonBuilder().setLongSerializationPolicy(LongSerializationPolicy.STRING).create()
-                    )
-                )
-                .build()
+            val httpClient = createHttpClient(token)
+            val retrofit = createRetrofit(host, httpClient)
             return Mastodon(
                 retrofit.create(AccountService::class.java),
                 retrofit.create(AppService::class.java),
@@ -177,7 +206,6 @@ class Mastodon(
                 retrofit.create(FollowSuggestionService::class.java),
                 retrofit.create(InstanceService::class.java),
                 retrofit.create(ListService::class.java),
-                retrofit.create(MastodonService::class.java),
                 retrofit.create(MediaAttachmentService::class.java),
                 retrofit.create(MuteService::class.java),
                 retrofit.create(NotificationService::class.java),
@@ -188,23 +216,22 @@ class Mastodon(
                 user
             )
         }
+    }
 
-        private fun createMastodonHttpClient(bearerToken: String?): OkHttpClient {
-            val logger = HttpLoggingInterceptor()
-            logger.level =
-                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
-
-            val httpClientBuilder = OkHttpClient.Builder().addInterceptor(logger).dispatcher(dispatcher)
-            if (bearerToken != null) {
-                httpClientBuilder.addInterceptor {
-                    val org = it.request()
-                    val builder = org.newBuilder()
-                    builder.addHeader("Authorization", "Bearer $bearerToken")
-                    val newRequest = builder.build()
-                    it.proceed(newRequest)
-                }
+    @VisibleForTesting
+    class RegisterService(
+        appService: AppService,
+        oauthService: OauthService
+    ) : AppService by appService,
+        OauthService by oauthService {
+        companion object {
+            fun create(domain: String): RegisterService {
+                val retrofit = createRetrofit(domain, createHttpClient())
+                return RegisterService(
+                    retrofit.create(AppService::class.java),
+                    retrofit.create(OauthService::class.java)
+                )
             }
-            return httpClientBuilder.build()
         }
     }
 }

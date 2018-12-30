@@ -47,7 +47,10 @@ class Account {
     val source: Source? = null
 
     @Transient
-    var spannedDisplayName: Spanned? = null
+    var displayNameWithEmoji: Spanned? = null
+
+    @Transient
+    var spannedDisplayNameWithAcct: Spanned? = null
 
     val unicodeAcct: String
         get() {

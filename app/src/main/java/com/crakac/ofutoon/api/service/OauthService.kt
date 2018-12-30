@@ -9,7 +9,7 @@ import retrofit2.http.POST
 /**
  * Created by Kosuke on 2017/04/27.
  */
-interface MastodonService {
+interface OauthService {
 
     @FormUrlEncoded
     @POST("oauth/token")

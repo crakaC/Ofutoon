@@ -26,6 +26,7 @@ import retrofit2.Call
 
 class LoginActivity : AppCompatActivity() {
     companion object {
+        const val INSTANCE_DOMAIN = "instance_domain"
         val TAG = "LoginActivity"
         val ACTION_ADD_ACCOUNT = "add_account"
         val REQUEST_AUTHORIZE = 1001 // 特に意味はない
@@ -40,12 +41,15 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         savedInstanceState?.let {
-            domainEditText.setText(it.getString("instanceDomain"))
+            domainEditText.setText(it.getString(INSTANCE_DOMAIN))
         }
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         domainEditText.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                inputManager.hideSoftInputFromWindow(domainEditText.windowToken, InputMethodManager.RESULT_UNCHANGED_SHOWN)
+                inputManager.hideSoftInputFromWindow(
+                    domainEditText.windowToken,
+                    InputMethodManager.RESULT_UNCHANGED_SHOWN
+                )
                 return@setOnKeyListener true
             }
             return@setOnKeyListener false
@@ -71,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putString("instanceDomain", instanceDomain)
+        outState?.putString(INSTANCE_DOMAIN, instanceDomain)
         super.onSaveInstanceState(outState)
     }
 
@@ -104,14 +108,12 @@ class LoginActivity : AppCompatActivity() {
                 return
             }
             setLoading(true)
-            Mastodon.fetchAccessToken(domain, oauthRedirectUri, code).enqueue(fetchAccessTokenCallback)
-        }
-    }
-
-    private val fetchAccessTokenCallback = object : MastodonCallback<AccessToken> {
-        override fun onSuccess(result: AccessToken) {
-            onFetchAccessTokenSuccess(instanceDomain, result.accessToken)
-            PrefsUtil.remove(C.OAUTH_TARGET_DOMAIN)
+            Mastodon.fetchAccessToken(domain, oauthRedirectUri, code).enqueue(object : MastodonCallback<AccessToken> {
+                override fun onSuccess(result: AccessToken) {
+                    onFetchAccessTokenSuccess(instanceDomain, result.accessToken)
+                    PrefsUtil.remove(C.OAUTH_TARGET_DOMAIN)
+                }
+            })
         }
     }
 
@@ -119,12 +121,14 @@ class LoginActivity : AppCompatActivity() {
         //verify credentials
         Mastodon.create(domain, accessToken).getCurrentAccount().enqueue(object : MastodonCallback<Account> {
             override fun onSuccess(result: Account) {
-                val user = User(name = result.username,
+                val user = User(
+                    name = result.username,
                     displayName = result.displayName,
                     userId = result.id,
                     avatar = result.avatarStatic,
                     domain = domain,
-                    token = accessToken)
+                    token = accessToken
+                )
                 AppDatabase.execute {
                     val oldUser = AppDatabase.instance.userDao().select(user.userId, user.domain)
                     if (oldUser != null) {
@@ -136,7 +140,7 @@ class LoginActivity : AppCompatActivity() {
                     val newUser = AppDatabase.instance.userDao().select(user.userId, user.domain)!!
                     PrefsUtil.putInt(C.CURRENT_USER_ID, newUser.id)
                     AppDatabase.uiThread {
-                        Mastodon.create(newUser)
+                        Mastodon.initialize(newUser)
                         startHomeActivity()
                     }
                 }
@@ -151,7 +155,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun registerApplication() {
         setLoading(true)
-        Mastodon.registerApplication(instanceDomain, getString(R.string.app_name), oauthRedirectUri, getString(R.string.website)).enqueue(object : MastodonCallback<AppCredentials> {
+        Mastodon.registerApplication(
+            instanceDomain,
+            getString(R.string.app_name),
+            oauthRedirectUri,
+            getString(R.string.website)
+        ).enqueue(object : MastodonCallback<AppCredentials> {
             override fun onSuccess(result: AppCredentials) {
                 Mastodon.saveAppCredential(instanceDomain, result)
                 startAuthorize(instanceDomain)

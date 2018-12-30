@@ -111,14 +111,15 @@ class AccountServiceTest : ApiTestBase() {
                 Assert.assertTrue(r.isSuccessful)
             }
         }
+    }
 
-        run {
-            val r = api.getStatuses(BuildConfig.DEBUG_ACCOUNT_ID, true, true, false, pagingLong.q).execute()
-            Assert.assertTrue(r.isSuccessful)
-            val statuses = r.body()!!
-            statuses.forEach {
-                Assert.assertTrue(it.mediaAttachments != null)
-            }
+    @Test
+    fun getMediaOnlyStatus(){
+        val r = api.getStatuses(1, true, false, false).execute()
+        Assert.assertTrue(r.isSuccessful)
+        val statuses = r.body()!!
+        statuses.forEach {
+            Assert.assertTrue(it.mediaAttachments.isNotEmpty())
         }
     }
 

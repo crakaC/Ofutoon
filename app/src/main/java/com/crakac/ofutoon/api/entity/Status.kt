@@ -1,17 +1,19 @@
 package com.crakac.ofutoon.api.entity
 
 import android.text.Spanned
+import com.crakac.ofutoon.util.TextUtil
 import com.google.gson.annotations.SerializedName
 
-class Status{
+class Status {
     enum class Visibility(val value: String) {
         Public("public"),
         UnListed("unlisted"),
         Private("private"),
         Direct("direct")
     }
+
     @SerializedName("id")
-    val id  = 0L
+    val id = 0L
     @SerializedName("uri")
     val uri = ""
     @SerializedName("url")
@@ -64,9 +66,23 @@ class Status{
     @Transient
     var spannedContent: Spanned? = null
 
-    fun getVisibility(): Visibility {
-        return Visibility.values().first { e -> e.value == visibility }
+    @Transient
+    var createdAtMillis = 0L
+
+    fun getRelativeTime(): CharSequence {
+        if (createdAtMillis == 0L) {
+            createdAtMillis = TextUtil.parseCreatedAt(createdAt)
+        }
+        return TextUtil.getRelativeTimeSpanString(createdAtMillis)
     }
+
+    fun isBoostable(): Boolean {
+        return visibility == Visibility.Public.value || visibility == Visibility.UnListed.value
+    }
+
+    fun isUnlisted() = visibility == Visibility.UnListed.value
+    fun isPrivate() = visibility == Visibility.Private.value
+    fun isDirect() = visibility == Visibility.Direct.value
 
     val originalId: Long
         get() {

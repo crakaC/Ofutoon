@@ -9,10 +9,11 @@ class InitialActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Mastodon.existsCurrentAccount { user ->
+        Mastodon.currentAccount { user ->
             if(user == null){
                 startActivity(Intent(this, LoginActivity::class.java))
             } else {
+                Mastodon.initialize(user)
                 startActivity(Intent(this, HomeActivity::class.java))
             }
             finish()

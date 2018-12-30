@@ -7,7 +7,7 @@ import org.junit.Assert
 import org.junit.Test
 
 class AppServiceTest {
-    val noTokenApi = Mastodon.create("localhost")
+    val noTokenApi = Mastodon.RegisterService.create("localhost")
 
     @Test
     fun register() {
@@ -15,7 +15,7 @@ class AppServiceTest {
         var credential: AppCredentials?
         var api: AppService? = null
         run {
-            val response = noTokenApi.registerApplication(appName, "urn:ietf:wg:oauth:2.0:oob", C.OAUTH_SCOPES, "https://example.com").execute()
+            val response = noTokenApi.registerApplication(appName, "urn:ietf:wg:oauth:2.0:oob", "read", "https://example.com").execute()
             Assert.assertTrue(response.isSuccessful)
             credential = response.body()
         }
@@ -27,7 +27,7 @@ class AppServiceTest {
                 "password",
                 BuildConfig.TEST_USER,
                 BuildConfig.TEST_PASSWORD,
-                C.OAUTH_SCOPES
+                "read"
             ).execute()
             Assert.assertTrue(response.isSuccessful)
             val token = response.body()!!
