@@ -6,7 +6,7 @@ import org.junit.Test
 
 class StatusTest {
     @Test
-    fun attachments(){
+    fun attachments() {
         val jsonString = javaClass.getResourceAsStream("/status_with_attachment.json").bufferedReader().readText()
         val status = Gson().fromJson<Status>(jsonString, Status::class.java)
         Assert.assertTrue(status.mediaAttachments.isNotEmpty())

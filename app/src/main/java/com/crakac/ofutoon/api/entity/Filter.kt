@@ -3,12 +3,13 @@ package com.crakac.ofutoon.api.entity
 import com.google.gson.annotations.SerializedName
 
 class Filter {
-    enum class Context(val value: String){
+    enum class Context(val value: String) {
         Home("home"),
         Notifications("notifications"),
         Public("public"),
         Thread("thread")
     }
+
     @SerializedName("id")
     val id: Long = 0L
     @SerializedName("phrase")

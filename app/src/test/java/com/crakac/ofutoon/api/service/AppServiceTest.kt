@@ -15,12 +15,14 @@ class AppServiceTest {
         var credential: AppCredentials?
         var api: AppService? = null
         run {
-            val response = noTokenApi.registerApplication(appName, "urn:ietf:wg:oauth:2.0:oob", "read", "https://example.com").execute()
+            val response =
+                noTokenApi.registerApplication(appName, "urn:ietf:wg:oauth:2.0:oob", "read", "https://example.com")
+                    .execute()
             Assert.assertTrue(response.isSuccessful)
             credential = response.body()
         }
 
-        credential?.let{
+        credential?.let {
             val response = noTokenApi.fetchAccessTokenByPassword(
                 it.clientId,
                 it.clientSecret,
@@ -35,7 +37,7 @@ class AppServiceTest {
             api = Mastodon.create("localhost", token.accessToken)
         }
 
-        api?.let{
+        api?.let {
             val response = it.verifyCredentials().execute()
             Assert.assertTrue(response.isSuccessful)
             Assert.assertEquals(appName, response.body()!!.name)

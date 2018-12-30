@@ -4,7 +4,7 @@ import com.crakac.ofutoon.BuildConfig
 import org.junit.Assert
 import org.junit.Test
 
-class MuteServiceTest: ApiTestBase() {
+class MuteServiceTest : ApiTestBase() {
     val api = baseApi as MuteService
 
     @Test

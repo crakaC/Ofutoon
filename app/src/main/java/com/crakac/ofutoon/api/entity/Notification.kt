@@ -2,13 +2,14 @@ package com.crakac.ofutoon.api.entity
 
 import com.google.gson.annotations.SerializedName
 
-class Notification{
+class Notification {
     enum class Type(val value: String) {
         Mention("mention"),
         ReBlog("reblog"),
         Favourite("favourite"),
         Follow("follow")
     }
+
     @SerializedName("id")
     val id: Long = 0
     @SerializedName("type")

@@ -1,10 +1,9 @@
 package com.crakac.ofutoon.ui
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DividerItemDecoration
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.crakac.ofutoon.R
 import com.crakac.ofutoon.api.Mastodon
 import com.crakac.ofutoon.api.entity.MastodonCallback
@@ -29,7 +28,7 @@ class HomeActivity : AppCompatActivity() {
         val layoutManager = FastScrollLinearLayoutManager(this)
         swipeRefresh.recyclerView.layoutManager = layoutManager
 
-        val divider = DividerItemDecoration(this, layoutManager.orientation).apply {
+        val divider = androidx.recyclerview.widget.DividerItemDecoration(this, layoutManager.orientation).apply {
             setDrawable(ContextCompat.getDrawable(this@HomeActivity, R.drawable.divider)!!)
         }
         swipeRefresh.recyclerView.addItemDecoration(divider)
@@ -39,7 +38,7 @@ class HomeActivity : AppCompatActivity() {
                 override fun onSuccess(result: List<Status>) {
                     statusAdapter.add(result)
                     result.forEach {
-                        Log.i("media_attachments", it.content +"\n" + Gson().toJson(it.mediaAttachments))
+                        Log.i("media_attachments", it.content + "\n" + Gson().toJson(it.mediaAttachments))
                     }
                 }
             }

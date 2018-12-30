@@ -24,13 +24,24 @@ class EmojiSpan(val view: View, val emoji: Emoji) : ReplacementSpan() {
         mPaint.isFilterBitmap = true
         val url = emoji.staticUrl
         Glide.with(view.context.applicationContext).asBitmap().load(url).listener(object : RequestListener<Bitmap> {
-            override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+            override fun onResourceReady(
+                resource: Bitmap?,
+                model: Any?,
+                target: Target<Bitmap>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
                 mBitmap = resource
                 view.invalidate()
                 return false
             }
 
-            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean = false
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Bitmap>?,
+                isFirstResource: Boolean
+            ): Boolean = false
         }).submit(128, 128)
     }
 
@@ -47,7 +58,17 @@ class EmojiSpan(val view: View, val emoji: Emoji) : ReplacementSpan() {
         return size
     }
 
-    override fun draw(canvas: Canvas, text: CharSequence?, start: Int, end: Int, x: Float, top: Int, y: Int, bottom: Int, paint: Paint) {
+    override fun draw(
+        canvas: Canvas,
+        text: CharSequence?,
+        start: Int,
+        end: Int,
+        x: Float,
+        top: Int,
+        y: Int,
+        bottom: Int,
+        paint: Paint
+    ) {
         val bitmap = mBitmap ?: return
         val size = (0.5f + SCALE_RATIO * paint.textSize).toInt()
         val descent = (0.5f + size * DESCENT_RATIO).toInt()

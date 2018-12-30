@@ -1,7 +1,6 @@
 package com.crakac.ofutoon.ui.adapter
 
 import android.graphics.drawable.Drawable
-import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
@@ -12,16 +11,27 @@ import com.bumptech.glide.request.target.Target
 import com.crakac.ofutoon.R
 import com.github.chrisbanes.photoview.PhotoView
 
-abstract class PreviewAdapter : PagerAdapter() {
+abstract class PreviewAdapter : androidx.viewpager.widget.PagerAdapter() {
 
-    class PreviewLoadListener(val photoView: PhotoView, val progress: View): RequestListener<Drawable> {
-        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+    class PreviewLoadListener(val photoView: PhotoView, val progress: View) : RequestListener<Drawable> {
+        override fun onResourceReady(
+            resource: Drawable?,
+            model: Any?,
+            target: Target<Drawable>?,
+            dataSource: DataSource?,
+            isFirstResource: Boolean
+        ): Boolean {
             photoView.attacher.update()
             progress.visibility = View.GONE
             return false
         }
 
-        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+        override fun onLoadFailed(
+            e: GlideException?,
+            model: Any?,
+            target: Target<Drawable>?,
+            isFirstResource: Boolean
+        ): Boolean {
             return true
         }
     }

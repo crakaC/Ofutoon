@@ -47,7 +47,11 @@ class TextUtil private constructor() {
         }
 
         fun emojify(view: View, status: Status): Spanned {
-            return shrinkLinks(replaceEmoji(view, trimWhiteSpace(Html.fromHtml(status.content)), status.emojis), status.mentions, status.tags)
+            return shrinkLinks(
+                replaceEmoji(view, trimWhiteSpace(Html.fromHtml(status.content)), status.emojis),
+                status.mentions,
+                status.tags
+            )
         }
 
         fun emojify(view: View, content: String, emojis: List<Emoji>): Spanned {
@@ -107,11 +111,11 @@ class TextUtil private constructor() {
             return sdf.parse(source).time + TimeZone.getDefault().rawOffset
         }
 
-        fun getRelativeTimeSpanString(time: Long): CharSequence{
+        fun getRelativeTimeSpanString(time: Long): CharSequence {
             return DateUtils.getRelativeTimeSpanString(time, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
         }
 
         fun currentTimeString(): String =
-                SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     }
 }

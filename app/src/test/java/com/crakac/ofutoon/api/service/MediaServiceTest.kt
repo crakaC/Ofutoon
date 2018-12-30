@@ -7,11 +7,11 @@ import org.junit.Assert
 import org.junit.Test
 import java.io.File
 
-class MediaServiceTest: ApiTestBase() {
+class MediaServiceTest : ApiTestBase() {
     val api = baseApi as MediaAttachmentService
 
     @Test
-    fun uploadAndUpdate(){
+    fun uploadAndUpdate() {
         val f = imageFile()
         Assert.assertNotNull(f)
 
@@ -21,7 +21,7 @@ class MediaServiceTest: ApiTestBase() {
         Assert.assertTrue(r.isSuccessful)
 
         val attachment = r.body()!!
-        run{
+        run {
             val description = "TEST DESCRIPTION"
             val r = api.updateMediaAttachment(attachment.id, description, "0.1f,0.2f").execute()
             Assert.assertTrue(r.isSuccessful)

@@ -3,14 +3,13 @@ package com.crakac.ofutoon.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import com.crakac.ofutoon.C
 import com.crakac.ofutoon.R
 import com.crakac.ofutoon.api.Mastodon
@@ -21,6 +20,7 @@ import com.crakac.ofutoon.api.entity.MastodonCallback
 import com.crakac.ofutoon.db.AppDatabase
 import com.crakac.ofutoon.db.User
 import com.crakac.ofutoon.util.PrefsUtil
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
 
@@ -74,8 +74,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putString(INSTANCE_DOMAIN, instanceDomain)
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(INSTANCE_DOMAIN, instanceDomain)
         super.onSaveInstanceState(outState)
     }
 

@@ -5,7 +5,7 @@ import android.widget.ProgressBar
 import com.crakac.ofutoon.util.GlideApp
 import com.github.chrisbanes.photoview.PhotoView
 
-class UploadedMediaPreviewAdapter(val attachments: ArrayList<Uri>): PreviewAdapter(){
+class UploadedMediaPreviewAdapter(val attachments: ArrayList<Uri>) : PreviewAdapter() {
     override fun getCount(): Int {
         return attachments.count()
     }

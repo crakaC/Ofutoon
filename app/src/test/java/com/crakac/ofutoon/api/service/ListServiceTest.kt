@@ -3,11 +3,11 @@ package com.crakac.ofutoon.api.service
 import org.junit.Assert
 import org.junit.Test
 
-class ListServiceTest: ApiTestBase() {
+class ListServiceTest : ApiTestBase() {
     val api = baseApi as ListService
 
     @Test
-    fun create(){
+    fun create() {
         // Create new List
         val listName = randomString()
         val response = api.createList(listName).execute()

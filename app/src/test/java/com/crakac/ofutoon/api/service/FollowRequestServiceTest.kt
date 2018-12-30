@@ -3,7 +3,7 @@ package com.crakac.ofutoon.api.service
 import org.junit.Assert
 import org.junit.Test
 
-class FollowRequestServiceTest: ApiTestBase() {
+class FollowRequestServiceTest : ApiTestBase() {
     val api = baseApi as FollowRequestService
 
     @Test
@@ -13,12 +13,12 @@ class FollowRequestServiceTest: ApiTestBase() {
     }
 
     @Test
-    fun authorizeRequest(){
+    fun authorizeRequest() {
         Assert.fail("not yet")
     }
 
     @Test
-    fun rejectRequest(){
+    fun rejectRequest() {
         Assert.fail("not yet")
     }
 }

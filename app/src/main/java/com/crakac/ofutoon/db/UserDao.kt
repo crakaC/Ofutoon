@@ -1,6 +1,6 @@
 package com.crakac.ofutoon.db
 
-import android.arch.persistence.room.*
+import androidx.room.*
 
 
 @Dao

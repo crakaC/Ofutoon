@@ -37,7 +37,7 @@ class FilterServiceTest : ApiTestBase() {
         Assert.assertTrue(api.deleteFilter(newFilter.id).execute().isSuccessful)
 
         // Get All Filter
-        run{
+        run {
             val r = api.getFilters().execute()
             Assert.assertTrue(r.isSuccessful)
             val filters = r.body()!!

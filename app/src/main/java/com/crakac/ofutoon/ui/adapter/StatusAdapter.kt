@@ -1,16 +1,15 @@
 package com.crakac.ofutoon.ui.adapter
 
 import android.content.Intent
-import android.databinding.BindingAdapter
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.android.databinding.library.baseAdapters.BR
+import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
+import androidx.databinding.library.baseAdapters.BR
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.crakac.ofutoon.R
@@ -22,7 +21,7 @@ import com.crakac.ofutoon.ui.widget.InlineImagePreview
 import com.crakac.ofutoon.util.GlideApp
 import com.crakac.ofutoon.util.TextUtil
 
-class StatusAdapter : RecyclerView.Adapter<StatusAdapter.StatusViewHolder>() {
+class StatusAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<StatusAdapter.StatusViewHolder>() {
     val items = ArrayList<Status>()
 
     fun add(newItems: Collection<Status>) {
@@ -54,7 +53,8 @@ class StatusAdapter : RecyclerView.Adapter<StatusAdapter.StatusViewHolder>() {
         Reblog(4)
     }
 
-    class StatusViewHolder(private val binding: ListItemStatusBinding) : RecyclerView.ViewHolder(binding.root) {
+    class StatusViewHolder(private val binding: ListItemStatusBinding) :
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
         init {
             binding.content.movementMethod = ContentMovementMethod.instance
         }

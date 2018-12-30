@@ -9,7 +9,7 @@ open class ApiTestBase {
     val pagingInt = Paging(Int.MAX_VALUE.toLong(), 0)
     val baseApi = Mastodon.create("localhost", BuildConfig.LOCAL_TOKEN)
 
-    fun randomString(length: Int = 10): String{
+    fun randomString(length: Int = 10): String {
         return ('A'..'z').shuffled().subList(0, length).joinToString("")
     }
 }

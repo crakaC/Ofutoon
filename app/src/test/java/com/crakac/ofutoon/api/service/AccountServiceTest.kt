@@ -40,7 +40,7 @@ class AccountServiceTest : ApiTestBase() {
     }
 
     @Test
-    fun updateFieldsAttributes(){
+    fun updateFieldsAttributes() {
         run {
             val field = FieldParam(randomString(), randomString())
             val map = FieldsAttributes(listOf(field)).toFieldMap()
@@ -53,7 +53,7 @@ class AccountServiceTest : ApiTestBase() {
     }
 
     @Test
-    fun updateAvatar(){
+    fun updateAvatar() {
         val avatarFile = imageFile("/icon.png")
         val reqFile = RequestBody.create(MediaType.parse("image/*"), avatarFile)
         val body = MultipartBody.Part.createFormData("avatar", avatarFile.name, reqFile)
@@ -62,7 +62,7 @@ class AccountServiceTest : ApiTestBase() {
     }
 
     @Test
-    fun updateHeader(){
+    fun updateHeader() {
         val headerFile = imageFile("/lgtm.gif")
         val reqFile = RequestBody.create(MediaType.parse("image/*"), headerFile)
         val body = MultipartBody.Part.createFormData("header", headerFile.name, reqFile)
@@ -114,7 +114,7 @@ class AccountServiceTest : ApiTestBase() {
     }
 
     @Test
-    fun getMediaOnlyStatus(){
+    fun getMediaOnlyStatus() {
         val r = api.getStatuses(1, true, false, false).execute()
         Assert.assertTrue(r.isSuccessful)
         val statuses = r.body()!!

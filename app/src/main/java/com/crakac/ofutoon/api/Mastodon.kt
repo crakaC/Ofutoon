@@ -1,7 +1,7 @@
 package com.crakac.ofutoon.api
 
 import android.net.Uri
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import com.crakac.ofutoon.BuildConfig
 import com.crakac.ofutoon.C
 import com.crakac.ofutoon.api.entity.AccessToken

@@ -4,7 +4,7 @@ import com.crakac.ofutoon.BuildConfig
 import org.junit.Assert
 import org.junit.Test
 
-class BlockServiceTest: ApiTestBase() {
+class BlockServiceTest : ApiTestBase() {
     val api = baseApi as BlockService
     @Test
     fun block() {

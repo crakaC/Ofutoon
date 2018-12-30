@@ -1,9 +1,9 @@
 package com.crakac.ofutoon.ui.widget
 
 import android.content.Context
-import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.view.MotionEvent
+import androidx.appcompat.widget.AppCompatTextView
 
 class TouchTroughTextView(context: Context, attrs: AttributeSet) : AppCompatTextView(context, attrs) {
     val TAG: String = "TouchTroughTextView"
@@ -17,7 +17,7 @@ class TouchTroughTextView(context: Context, attrs: AttributeSet) : AppCompatText
         return hasSpanTouched
     }
 
-    fun handleTouchEvent(){
+    fun handleTouchEvent() {
         hasSpanTouched = true
 //        Log.d(TAG, "handleTouchEvent")
     }

@@ -21,7 +21,7 @@ class EndorsementServiceTest : ApiTestBase() {
             val accounts = api.getEndorsements().execute().body()!!
             Assert.assertTrue(accounts.map { a -> a.id }.contains(targetId))
         }
-        run{
+        run {
             api.unendorseAccount(targetId).execute()
             val accounts = api.getEndorsements().execute().body()!!
             Assert.assertFalse(accounts.map { a -> a.id }.contains(targetId))

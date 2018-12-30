@@ -28,7 +28,8 @@ class AttachmentsPreviewActivity : Activity() {
             intent.putExtra(TARGET, Gson().toJson(status))
             intent.putExtra(INDEX, index)
         }
-        fun setup(intent: Intent, uris: ArrayList<Uri>, index: Int = 0){
+
+        fun setup(intent: Intent, uris: ArrayList<Uri>, index: Int = 0) {
             intent.action = PreviewAction.Preview.toString()
             intent.putExtra(TARGET, uris)
             intent.putExtra(INDEX, index)
@@ -50,8 +51,8 @@ class AttachmentsPreviewActivity : Activity() {
 
     private fun setupWithTargetStatus() {
         targetStatus = Gson().fromJson(intent.extras.getString(TARGET), Status::class.java)
-        val attachments = if(targetStatus!!.reblog != null){
-             targetStatus!!.reblog!!.mediaAttachments
+        val attachments = if (targetStatus!!.reblog != null) {
+            targetStatus!!.reblog!!.mediaAttachments
         } else {
             targetStatus!!.mediaAttachments
         }
@@ -59,7 +60,7 @@ class AttachmentsPreviewActivity : Activity() {
         pager.currentItem = intent.extras.getInt(INDEX, 0)
     }
 
-    private fun setupWithUris(){
+    private fun setupWithUris() {
         val uris = intent.extras.getParcelableArrayList<Uri>(TARGET) as ArrayList<Uri>
         pager.adapter = UploadedMediaPreviewAdapter(uris)
         pager.currentItem = intent.extras.getInt(INDEX, 0)

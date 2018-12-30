@@ -41,8 +41,10 @@ class ContentMovementMethod private constructor() : LinkMovementMethod() {
 
     private var lastActionDownClickableSpan: ClickableSpan? = null
 
-    override fun onTouchEvent(widget: TextView, buffer: Spannable,
-                              event: MotionEvent): Boolean {
+    override fun onTouchEvent(
+        widget: TextView, buffer: Spannable,
+        event: MotionEvent
+    ): Boolean {
 
         val action = event.action
 
@@ -61,7 +63,7 @@ class ContentMovementMethod private constructor() : LinkMovementMethod() {
             if (lastActionDownClickableSpan != null && currentClickableSpan == lastActionDownClickableSpan) {
                 lastActionDownClickableSpan?.onClick(widget)
             }
-            if(currentClickableSpan != null && widget is TouchTroughTextView){
+            if (currentClickableSpan != null && widget is TouchTroughTextView) {
                 widget.handleTouchEvent()
             }
             lastActionDownClickableSpan = null
@@ -74,7 +76,7 @@ class ContentMovementMethod private constructor() : LinkMovementMethod() {
                     widget.invalidate()
                 }
 
-                if(widget is TouchTroughTextView){
+                if (widget is TouchTroughTextView) {
                     widget.handleTouchEvent()
                 }
 

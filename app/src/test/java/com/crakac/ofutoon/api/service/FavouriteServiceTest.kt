@@ -4,7 +4,7 @@ import com.crakac.ofutoon.BuildConfig
 import org.junit.Assert
 import org.junit.Test
 
-class FavouriteServiceTest: ApiTestBase() {
+class FavouriteServiceTest : ApiTestBase() {
     val api = baseApi as FavouriteService
 
     @Test
@@ -18,7 +18,7 @@ class FavouriteServiceTest: ApiTestBase() {
     }
 
     @Test
-    fun favouriteStatus(){
+    fun favouriteStatus() {
         run {
             val r = api.favouriteStatus(BuildConfig.DEBUG_STATUS_ID).execute()
             Assert.assertTrue(r.isSuccessful)

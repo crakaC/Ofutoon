@@ -27,12 +27,12 @@ class TimelineServiceTest : ApiTestBase() {
     }
 
     @Test
-    fun conversations(){
+    fun conversations() {
         Assert.assertTrue(api.getConversations().execute().isSuccessful)
     }
 
     @Test
-    fun listTimeline(){
+    fun listTimeline() {
         val listId = baseApi.getLists().execute().body()!!.first().id
         Assert.assertTrue(api.getListTimeline(listId).execute().isSuccessful)
     }

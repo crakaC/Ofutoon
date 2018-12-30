@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <cache-path
-        name="image"
-        path="." />
+            name="image"
+            path="."/>
     <external-path
-        name="don"
-        path="."/>
+            name="don"
+            path="."/>
 </paths>

@@ -11,31 +11,31 @@
             android:layout_height="wrap_content"
             android:text="@string/sya"
             android:layout_marginBottom="@dimen/spacing_large"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display4" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display4"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/enter_domain" />
+            android:text="@string/enter_domain"/>
 
     <EditText
             android:id="@+id/domainEditText"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:lines="1" />
+            android:lines="1"/>
 
     <Button
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:text="@string/login" />
+            android:text="@string/login"/>
 
     <ProgressBar
             android:id="@+id/progress"
             android:indeterminate="true"
             android:visibility="gone"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>

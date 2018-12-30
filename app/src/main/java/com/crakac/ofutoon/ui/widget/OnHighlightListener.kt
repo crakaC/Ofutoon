@@ -1,5 +1,5 @@
 package com.crakac.ofutoon.ui.widget
 
-interface OnHighlightListener{
+interface OnHighlightListener {
     fun onHighlight(isHighlight: Boolean)
 }

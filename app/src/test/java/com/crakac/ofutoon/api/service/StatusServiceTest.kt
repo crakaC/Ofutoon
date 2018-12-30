@@ -58,7 +58,7 @@ class StatusServiceTest : ApiTestBase() {
 
         //pin, unpinn
 
-        run{
+        run {
             Assert.assertTrue(api.pinStatus(postedStatus!!.id).execute().isSuccessful)
             Assert.assertTrue(api.unpinStatus(postedStatus!!.id).execute().isSuccessful)
         }

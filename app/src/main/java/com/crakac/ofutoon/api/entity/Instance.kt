@@ -29,7 +29,7 @@ class Instance {
         val endpoint: String = ""
     }
 
-    class Stats{
+    class Stats {
         @SerializedName("user_count")
         val userCount = 0L
         @SerializedName("status_count")

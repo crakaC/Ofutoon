@@ -25,8 +25,9 @@ class NotificationServiceTest : ApiTestBase() {
     }
 
     private fun generateNotification() {
-        val genApi = Mastodon.create("localhost",BuildConfig.LOCAL_TOKEN_2)
-        val statuses = baseApi.getStatuses(baseApi.getCurrentAccount().execute().body()!!.id, limit = 10).execute().body()!!
+        val genApi = Mastodon.create("localhost", BuildConfig.LOCAL_TOKEN_2)
+        val statuses =
+            baseApi.getStatuses(baseApi.getCurrentAccount().execute().body()!!.id, limit = 10).execute().body()!!
         statuses.forEach { s ->
             genApi.unreblogStatus(s.id).execute()
             genApi.unfavouriteStatus(s.id).execute()

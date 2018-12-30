@@ -3,11 +3,11 @@ package com.crakac.ofutoon.api.service
 import com.google.gson.Gson
 import org.junit.Test
 
-class SearchServiceTest: ApiTestBase() {
+class SearchServiceTest : ApiTestBase() {
     val api = baseApi as SearchService
 
     @Test
-    fun search(){
+    fun search() {
         val result = api.search("test").execute().body()!!
         System.out.println(Gson().toJson(result))
 
