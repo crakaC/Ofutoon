@@ -20,9 +20,9 @@
                     android:name="android.support.FILE_PROVIDER_PATHS"
                     android:resource="@xml/provider_paths"/>
         </provider>
-        <activity android:name=".ui.HomeActivity"/>
+        <activity android:name=".ui.activity.HomeActivity"/>
         <activity
-                android:name=".ui.LoginActivity"
+                android:name=".ui.activity.LoginActivity"
                 android:launchMode="singleTop"
                 android:label="@string/title_activity_login">
             <intent-filter>
@@ -37,14 +37,14 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".ui.InitialActivity">
+        <activity android:name=".ui.activity.InitialActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.AttachmentsPreviewActivity"/>
+        <activity android:name=".ui.activity.AttachmentsPreviewActivity"/>
     </application>
 
 </manifest>

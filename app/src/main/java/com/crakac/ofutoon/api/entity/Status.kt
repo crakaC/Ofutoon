@@ -4,7 +4,7 @@ import android.text.Spanned
 import com.crakac.ofutoon.util.TextUtil
 import com.google.gson.annotations.SerializedName
 
-class Status {
+class Status : Identifiable() {
     enum class Visibility(val value: String) {
         Public("public"),
         UnListed("unlisted"),
@@ -12,8 +12,6 @@ class Status {
         Direct("direct")
     }
 
-    @SerializedName("id")
-    val id = 0L
     @SerializedName("uri")
     val uri = ""
     @SerializedName("url")

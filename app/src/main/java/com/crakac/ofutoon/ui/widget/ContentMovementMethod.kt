@@ -31,7 +31,7 @@ class ContentMovementMethod private constructor() : LinkMovementMethod() {
         if (0 <= line && line < layout.lineCount) {
             val lineLeft = layout.getLineLeft(line)
             val lineRight = layout.getLineRight(line)
-            if (x in lineLeft..lineRight) {
+            if (lineLeft <= x && x <= lineRight) {
                 val off = layout.getOffsetForHorizontal(line, x.toFloat())
                 return buffer.getSpans(off, off, ClickableSpan::class.java).firstOrNull()
             }

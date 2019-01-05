@@ -3,9 +3,11 @@ package com.crakac.ofutoon.ui.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.crakac.ofutoon.R
 
-class SwipeRefreshRecyclerView : androidx.swiperefreshlayout.widget.SwipeRefreshLayout {
+class SwipeRefreshRecyclerView : SwipeRefreshLayout {
     companion object {
         val TAG: String = "SwipeRefreshListView"
         val VISIBLE_THRESHOLD = 5
@@ -32,7 +34,7 @@ class SwipeRefreshRecyclerView : androidx.swiperefreshlayout.widget.SwipeRefresh
     }
 
     private var mLoadMoreListener: OnLoadMoreListener? = null
-    fun setOnLoadMoreListener(listener: OnLoadMoreListener) {
+    fun setOnLoadMoreListener(listener: OnLoadMoreListener?) {
         mLoadMoreListener = listener
     }
 
@@ -40,7 +42,7 @@ class SwipeRefreshRecyclerView : androidx.swiperefreshlayout.widget.SwipeRefresh
         fun onLoadMore()
     }
 
-    val scrollListener = object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+    val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
             // bail out if scrolling upward or already loading data
             // if (dy < 0 || dataLoading.isDataLoading()) return

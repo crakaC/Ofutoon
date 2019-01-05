@@ -38,7 +38,7 @@
                 android:visibility="@{rootStatus != null ? View.VISIBLE : View.GONE}"
                 android:text="@{boostedBy}"/>
         <TextView
-                android:id="@+id/display_name"
+                android:id="@+id/displayName"
                 style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                 android:layout_toEndOf="@+id/icon"
                 android:layout_toStartOf="@+id/createdAt"
                 android:ellipsize="end"
-                android:text="@{status.account.spannedDisplayNameWithAcct}"
+                android:text="@{status.account.spannedDisplayName}"
                 android:maxLines="1"/>
 
         <TextView
@@ -54,7 +54,7 @@
                 style="@style/Base.TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/display_name"
+                android:layout_alignBaseline="@+id/displayName"
                 android:layout_alignParentEnd="true"
                 android:text="@{status.relativeTime}"
                 android:layout_alignParentTop="true"/>
@@ -98,7 +98,7 @@
                 style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/display_name"
+                android:layout_below="@+id/displayName"
                 android:layout_marginTop="@dimen/spacing_micro"
                 android:layout_toEndOf="@+id/icon"
                 android:visibility="@{status.hasSpoileredText() ? View.VISIBLE : View.GONE}"/>

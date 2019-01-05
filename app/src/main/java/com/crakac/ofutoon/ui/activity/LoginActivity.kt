@@ -1,4 +1,4 @@
-package com.crakac.ofutoon.ui
+package com.crakac.ofutoon.ui.activity
 
 import android.content.Context
 import android.content.Intent

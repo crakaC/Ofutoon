@@ -10,30 +10,22 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.library.baseAdapters.BR
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.crakac.ofutoon.R
 import com.crakac.ofutoon.api.entity.Status
 import com.crakac.ofutoon.databinding.ListItemStatusBinding
-import com.crakac.ofutoon.ui.AttachmentsPreviewActivity
+import com.crakac.ofutoon.ui.activity.AttachmentsPreviewActivity
 import com.crakac.ofutoon.ui.widget.ContentMovementMethod
 import com.crakac.ofutoon.ui.widget.InlineImagePreview
 import com.crakac.ofutoon.util.GlideApp
 import com.crakac.ofutoon.util.TextUtil
 
-class StatusAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<StatusAdapter.StatusViewHolder>() {
-    val items = ArrayList<Status>()
+class StatusAdapter : RefreshableAdapter<Status>() {
 
-    fun add(newItems: Collection<Status>) {
-        val oldSize = itemCount
-        items.addAll(newItems)
-        notifyItemRangeInserted(oldSize, newItems.size)
-    }
-
-    override fun getItemCount(): Int = items.size
-
-    override fun onBindViewHolder(holder: StatusViewHolder, position: Int) {
-        holder.setup(items[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as StatusViewHolder).setup(items[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatusViewHolder {
@@ -54,7 +46,7 @@ class StatusAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<StatusAd
     }
 
     class StatusViewHolder(private val binding: ListItemStatusBinding) :
-        androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), Refreshable {
         init {
             binding.content.movementMethod = ContentMovementMethod.instance
         }
@@ -65,6 +57,10 @@ class StatusAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<StatusAd
             } else {
                 StatusBinder.bind(status, null, binding)
             }
+        }
+
+        override fun refresh() {
+            binding.createdAt.text = binding.status?.getRelativeTime()
         }
     }
 
@@ -100,17 +96,15 @@ class StatusAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<StatusAd
                 binding: ListItemStatusBinding
             ) {
                 val account = status.account
-                if (account.spannedDisplayNameWithAcct == null) {
+                if (account.spannedDisplayName == null) {
                     val sb = SpannableStringBuilder()
                     sb.append(TextUtil.emojify(binding.displayName, account.displayName, account.emojis))
-                    account.displayNameWithEmoji = SpannableStringBuilder(sb)
-
                     val start = sb.length
                     sb.append(" @${account.unicodeAcct}")
                     val acctAppearance =
                         TextAppearanceSpan(binding.displayName.context, R.style.TextAppearance_AppCompat_Caption)
                     sb.setSpan(acctAppearance, start, sb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    account.spannedDisplayNameWithAcct = sb
+                    account.spannedDisplayName = sb
                 }
                 if (rootStatus != null) {
                     val rootAccount = rootStatus.account
