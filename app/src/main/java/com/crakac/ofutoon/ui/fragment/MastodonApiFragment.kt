@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -68,11 +69,17 @@ abstract class MastodonApiFragment<AdapterClass : Identifiable, ResponseClass> :
     override fun onRefresh() {
         refreshCall().enqueue(object : Callback<ResponseClass> {
             override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                if (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                    return
+                }
                 swipeRefresh.isRefreshing = false
                 refreshItem()
             }
 
             override fun onResponse(call: Call<ResponseClass>, response: Response<ResponseClass>) {
+                if (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                    return
+                }
                 swipeRefresh.isRefreshing = false
                 refreshItem()
                 if (!response.isSuccessful) {
@@ -106,6 +113,9 @@ abstract class MastodonApiFragment<AdapterClass : Identifiable, ResponseClass> :
 
             override fun onResponse(call: Call<ResponseClass>, response: Response<ResponseClass>) {
                 isLoadingNext = false
+                if (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                    return
+                }
                 if (!response.isSuccessful) {
                     return
                 }
