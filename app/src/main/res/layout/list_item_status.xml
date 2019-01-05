@@ -4,8 +4,7 @@
     <data>
         <import type="android.view.View"/>
         <variable name="status" type="com.crakac.ofutoon.api.entity.Status"/>
-        <variable name="rootStatus" type="com.crakac.ofutoon.api.entity.Status"/>
-        <variable name="boostedBy" type="android.text.Spanned"/>
+        <variable name="rootAccount" type="com.crakac.ofutoon.api.entity.Account"/>
     </data>
 
     <RelativeLayout
@@ -24,7 +23,7 @@
                 android:layout_marginEnd="@dimen/spacing_micro"
                 android:layout_toStartOf="@+id/actioned_text"
                 android:src="@drawable/ic_boost"
-                android:visibility="@{rootStatus != null ? View.VISIBLE : View.GONE}"
+                android:visibility="@{rootAccount != null ? View.VISIBLE : View.GONE}"
                 android:tint="@color/boosted"/>
 
         <TextView
@@ -35,8 +34,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/icon"
-                android:visibility="@{rootStatus != null ? View.VISIBLE : View.GONE}"
-                android:text="@{boostedBy}"/>
+                android:visibility="@{rootAccount != null ? View.VISIBLE : View.GONE}"/>
         <TextView
                 android:id="@+id/displayName"
                 style="@style/Base.TextAppearance.AppCompat.Body1"
@@ -67,7 +65,7 @@
                 android:layout_alignTop="@+id/icon"
                 app:imageUrl="@{status.account.avatar}"
                 app:radius="@{8}"
-                android:visibility="@{rootStatus != null ? View.VISIBLE : View.GONE}"/>
+                android:visibility="@{rootAccount != null ? View.VISIBLE : View.GONE}"/>
 
         <ImageView
                 android:id="@+id/actioned_by_icon"
@@ -75,9 +73,9 @@
                 android:layout_height="@dimen/avatar_icon_small"
                 android:layout_alignBottom="@+id/icon"
                 android:layout_alignEnd="@+id/icon"
-                app:imageUrl="@{rootStatus.account.avatar}"
+                app:imageUrl="@{rootAccount.avatar}"
                 app:radius="@{8}"
-                android:visibility="@{rootStatus != null ? View.VISIBLE : View.GONE}"/>
+                android:visibility="@{rootAccount != null ? View.VISIBLE : View.GONE}"/>
 
         <ImageView
                 android:id="@+id/icon"
@@ -90,7 +88,7 @@
                 android:layout_marginEnd="@dimen/spacing_mid_large"
                 android:layout_marginStart="@dimen/spacing_micro"
                 android:layout_marginTop="@dimen/spacing_micro"
-                android:visibility="@{rootStatus == null ? View.VISIBLE : View.INVISIBLE}"/>
+                android:visibility="@{rootAccount == null ? View.VISIBLE : View.INVISIBLE}"/>
 
         <com.crakac.ofutoon.ui.widget.TouchTroughTextView
                 android:text="@{status.spoilerText}"
