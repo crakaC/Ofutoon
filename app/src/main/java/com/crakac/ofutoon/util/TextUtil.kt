@@ -48,7 +48,7 @@ class TextUtil private constructor() {
 
         fun emojify(view: View, status: Status): Spanned {
             return shrinkLinks(
-                replaceEmoji(view, trimWhiteSpace(Html.fromHtml(status.content)), status.emojis),
+                replaceEmoji(view, trimWhiteSpace(Html.fromHtml(status.content, Html.FROM_HTML_MODE_LEGACY)), status.emojis),
                 status.mentions,
                 status.tags
             )
@@ -59,7 +59,7 @@ class TextUtil private constructor() {
         }
 
         fun fromHtml(text: String): Spanned {
-            return shrinkLinks(trimWhiteSpace(Html.fromHtml(text)) as Spanned)
+            return shrinkLinks(trimWhiteSpace(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)) as Spanned)
         }
 
         private fun shrinkLinks(spanned: Spanned, mentions: List<Mention>? = null, tags: List<Tag>? = null): Spanned {

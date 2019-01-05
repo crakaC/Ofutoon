@@ -15,10 +15,10 @@ interface UserDao {
     fun insert(user: User)
 
     @Query("SELECT * FROM user WHERE id = :id")
-    fun getUser(id: Int): User
+    fun get(id: Int): User
 
-    @Query("SELECT * FROM user WHERE userId = :userId AND domain = :domain")
-    fun select(userId: Long, domain: String): User?
+    @Query("SELECT * FROM user WHERE name = :name AND domain = :domain")
+    fun select(name: String, domain: String): User?
 
     @Update
     fun update(user: User)

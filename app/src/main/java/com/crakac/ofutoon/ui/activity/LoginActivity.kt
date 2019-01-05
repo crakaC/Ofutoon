@@ -21,6 +21,7 @@ import com.crakac.ofutoon.db.AppDatabase
 import com.crakac.ofutoon.db.User
 import com.crakac.ofutoon.util.PrefsUtil
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
 
@@ -123,21 +124,19 @@ class LoginActivity : AppCompatActivity() {
             override fun onSuccess(result: Account) {
                 val user = User(
                     name = result.username,
-                    displayName = result.displayName,
-                    userId = result.id,
-                    avatar = result.avatarStatic,
                     domain = domain,
-                    token = accessToken
+                    token = accessToken,
+                    accountJson = Gson().toJson(result)
                 )
                 AppDatabase.execute {
-                    val oldUser = AppDatabase.instance.userDao().select(user.userId, user.domain)
+                    val oldUser = AppDatabase.instance.userDao().select(user.name, user.domain)
                     if (oldUser != null) {
                         user.id = oldUser.id
-                        AppDatabase.instance.userDao().update(user) //update token
+                        AppDatabase.instance.userDao().update(user) //update token etc.
                     } else {
                         AppDatabase.instance.userDao().insert(user)
                     }
-                    val newUser = AppDatabase.instance.userDao().select(user.userId, user.domain)!!
+                    val newUser = AppDatabase.instance.userDao().select(user.name, user.domain)!!
                     PrefsUtil.putInt(C.CURRENT_USER_ID, newUser.id)
                     AppDatabase.uiThread {
                         Mastodon.initialize(newUser)

@@ -3,6 +3,9 @@
     <string name="website">"https://crakac.com/ofutoon"</string>
     <string name="file_provider_authority">com.crakac.ofutoon.fileprovider</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string name="title_activity_login">Login</string>
 
     <!-- Strings related to login -->
@@ -11,10 +14,13 @@
     <string name="enter_domain">ログインするインスタンスを入力して下さい</string>
     <string name="login">ログイン</string>
 
+    <string name="add_account">アカウントを追加</string>
+
     <string name="syar">( ˘ω˘)ｽﾔｧ</string>
     <string name="sya">( ˘ω˘)</string>
 
     <string name="dummy">XXXXXXXXXX</string>
+    <string name="fq_id_format">%s@%s</string>
     <string name="boosted_by">%sさんがブーストしました</string>
     <string name="favourited_by">%sさんがお気に入りしました</string>
     <string name="followed_by">%sさんにフォローされました</string>
@@ -22,5 +28,4 @@
     <string name="sensitive_media">閲覧注意</string>
     <string name="hidden_insensitive_media">非表示のメディア</string>
     <string name="tap_to_show">タップして表示</string>
-
 </resources>

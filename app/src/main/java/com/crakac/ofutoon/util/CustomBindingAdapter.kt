@@ -7,19 +7,21 @@ import com.bumptech.glide.request.RequestOptions
 
 class CustomBindingAdapter private constructor(){
     companion object {
-        @BindingAdapter("imageUrl", "radius", requireAll = false)
+        @BindingAdapter("imageUrl", "radius", "centerCrop", requireAll = false)
         @JvmStatic
-        fun loadImage(imageView: ImageView, url: String?, radius: Int?) {
+        fun loadImage(imageView: ImageView, url: String?, radius: Int?, centerCrop: Boolean = false) {
             if (url == null) {
                 GlideApp.with(imageView.context).clear(imageView)
                 return
             }
-            if (radius != null) {
-                GlideApp.with(imageView.context).load(url).apply(RequestOptions().transform(RoundedCorners(radius)))
-                    .into(imageView)
-            } else {
-                GlideApp.with(imageView.context).load(url).into(imageView)
+            var options = RequestOptions()
+            if(radius != null){
+                options = options.transform(RoundedCorners(radius))
             }
+            if(centerCrop){
+                options = options.centerCrop()
+            }
+            GlideApp.with(imageView.context).load(url).apply(options).into(imageView)
         }
     }
 

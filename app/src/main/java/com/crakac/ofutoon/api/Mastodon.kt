@@ -10,8 +10,7 @@ import com.crakac.ofutoon.api.service.*
 import com.crakac.ofutoon.db.AppDatabase
 import com.crakac.ofutoon.db.User
 import com.crakac.ofutoon.util.PrefsUtil
-import com.google.gson.GsonBuilder
-import com.google.gson.LongSerializationPolicy
+import com.google.gson.Gson
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -104,11 +103,7 @@ class Mastodon(
             return Retrofit.Builder()
                 .baseUrl(if (domain == "localhost") "http://localhost" else "https://$domain")
                 .client(httpClient)
-                .addConverterFactory(
-                    GsonConverterFactory.create(
-                        GsonBuilder().setLongSerializationPolicy(LongSerializationPolicy.STRING).create()
-                    )
-                )
+                .addConverterFactory(GsonConverterFactory.create(Gson()))
                 .build()
         }
 
@@ -138,7 +133,7 @@ class Mastodon(
 
         fun currentAccount(callback: (account: User?) -> Unit) {
             AppDatabase.execute {
-                val user = AppDatabase.instance.userDao().getUser(PrefsUtil.getInt(C.CURRENT_USER_ID, 0))
+                val user = AppDatabase.instance.userDao().get(PrefsUtil.getInt(C.CURRENT_USER_ID, 0))
                 AppDatabase.uiThread {
                     callback(user)
                 }
