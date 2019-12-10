@@ -5,11 +5,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.crakac.ofutoon"
         minSdkVersion 24
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -17,7 +17,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -42,6 +42,15 @@ android {
     dataBinding {
         enabled = true
     }
+
+    kotlinOptions {
+        jvmTarget = 1.8
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 def getProps(String file) {
@@ -53,16 +62,16 @@ def getProps(String file) {
 
 dependencies {
     ext {
-        appcompat_version = '1.1.0-alpha01'
-        material_version = '1.1.0-alpha02'
+        appcompat_version = '1.2.0-alpha01'
+        material_version = '1.2.0-alpha02'
         pallete_version = '1.0.0'
-        room_version = '2.1.0-alpha03'
-        annotation_version = '1.0.0'
+        room_version = '2.2.2'
+        annotation_version = '1.1.0'
         exifinterface_version = '1.0.0'
         photoview_version = '2.3.0'
-        glide_version = '4.8.0'
-        retrofit_version = '2.5.0'
-        okhttp_version = '3.11.0'
+        glide_version = '4.10.0'
+        retrofit_version = '2.7.0'
+        okhttp_version = '4.2.2'
     }
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -71,7 +80,7 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
     implementation "androidx.palette:palette:$pallete_version"
     implementation "androidx.annotation:annotation:$annotation_version"
-    implementation "androidx.exifinterface:exifinterface:$exifinterface_version"
+    implementation "androidx.exifinterface:exifinterface:1.1.0"
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -90,6 +99,7 @@ dependencies {
     testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp_version"
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 }

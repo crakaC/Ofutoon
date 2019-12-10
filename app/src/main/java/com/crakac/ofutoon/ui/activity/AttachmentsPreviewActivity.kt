@@ -39,7 +39,7 @@ class AttachmentsPreviewActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attachments_preview)
-        when (PreviewAction.valueOf(intent.action)) {
+        when (PreviewAction.valueOf(intent.action!!)) {
             PreviewAction.Preview -> {
                 setupWithUris()
             }
@@ -50,19 +50,21 @@ class AttachmentsPreviewActivity : Activity() {
     }
 
     private fun setupWithTargetStatus() {
-        targetStatus = Gson().fromJson(intent.extras.getString(TARGET), Status::class.java)
+        val bundle = intent.extras ?: return
+        targetStatus = Gson().fromJson(bundle.getString(TARGET), Status::class.java)
         val attachments = if (targetStatus!!.reblog != null) {
             targetStatus!!.reblog!!.mediaAttachments
         } else {
             targetStatus!!.mediaAttachments
         }
         pager.adapter = AttachmentPreviewAdapter(attachments)
-        pager.currentItem = intent.extras.getInt(INDEX, 0)
+        pager.currentItem = bundle.getInt(INDEX, 0)
     }
 
     private fun setupWithUris() {
-        val uris = intent.extras.getParcelableArrayList<Uri>(TARGET) as ArrayList<Uri>
+        val bundle = intent.extras ?: return
+        val uris = bundle.getParcelableArrayList<Uri>(TARGET) as ArrayList<Uri>
         pager.adapter = UploadedMediaPreviewAdapter(uris)
-        pager.currentItem = intent.extras.getInt(INDEX, 0)
+        pager.currentItem = bundle.getInt(INDEX, 0)
     }
 }

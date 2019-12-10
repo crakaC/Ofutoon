@@ -11,7 +11,7 @@ import java.util.concurrent.Executors
 @Database(entities = [User::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     companion object {
-        val DATABASE_NAME = "ofutodon.db"
+        val DATABASE_NAME = "ofutoon.db"
         private var mInstance: AppDatabase? = null
         val instance get() = mInstance!!
         fun init(context: Context) {

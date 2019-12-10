@@ -88,13 +88,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setLoading(false)
-        if (intent == null || intent.data == null) return
+        val data = intent?.data ?: return
 
-        if (intent.data.scheme != getString(R.string.oauth_scheme)) {
+        if (data.scheme != getString(R.string.oauth_scheme)) {
             return
         }
-        val code = intent.data.getQueryParameter("code")
-        val error = intent.data.getQueryParameter("error")
+        val code = data.getQueryParameter("code")
+        val error = data.getQueryParameter("error")
 
         if (error != null) {
             //TODO do something
